@@ -60,10 +60,10 @@ const db = drizzle(client, { schema });
 
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET!,
-  baseURL: (process.env.BETTER_AUTH_URL ?? "http://localhost:3000").replace(/\/$/, ""),
+  baseURL: process.env.BETTER_AUTH_URL!,
   trustedOrigins: [
-    (process.env.BETTER_AUTH_URL ?? "http://localhost:3000").replace(/\/$/, ""),
-    ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",").map(o => o.trim().replace(/\/$/, "")) ?? []),
+    process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
+    ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",") ?? []),
   ],
   database: drizzleAdapter(db, { provider: "pg", schema }),
   emailAndPassword: { enabled: true },
