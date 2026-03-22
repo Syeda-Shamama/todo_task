@@ -14,8 +14,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [biometricLoading, setBiometricLoading] = useState(false);
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -28,27 +26,6 @@ export default function LoginPage() {
       setError(err.message ?? "Invalid credentials");
     } finally {
       setLoading(false);
-    }
-  }
-
-  async function handleBiometric() {
-    setBiometricLoading(true);
-    try {
-      const credential = await navigator.credentials.get({
-        publicKey: {
-          challenge: crypto.getRandomValues(new Uint8Array(32)),
-          timeout: 60000,
-          userVerification: "required",
-          rpId: window.location.hostname,
-        },
-      });
-      if (credential) {
-        setError("Biometric verified — link your account to enable this login method.");
-      }
-    } catch {
-      setError("Biometric authentication is not set up for this device.");
-    } finally {
-      setBiometricLoading(false);
     }
   }
 
@@ -167,32 +144,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-slate-800" />
-            <span className="text-xs text-slate-600 uppercase tracking-wider">or</span>
-            <div className="flex-1 h-px bg-slate-800" />
-          </div>
-
-          {/* Biometric */}
-          <button
-            type="button"
-            onClick={handleBiometric}
-            disabled={biometricLoading}
-            className="w-full flex items-center justify-center gap-3 bg-[#0d1526] hover:bg-slate-800 border border-slate-700 hover:border-blue-500/50 text-slate-300 hover:text-white font-medium py-3 rounded-xl transition text-sm group"
-          >
-            {biometricLoading ? (
-              <svg className="w-5 h-5 animate-spin text-blue-400" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33" />
-              </svg>
-            )}
-            Sign in with Biometrics
-          </button>
         </div>
 
         <p className="mt-6 text-sm text-slate-500 text-center">
