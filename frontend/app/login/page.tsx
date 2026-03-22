@@ -75,13 +75,10 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="mb-2">
                 <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider">
                   Password
                 </label>
-                <Link href="#" className="text-xs text-blue-400 hover:text-blue-300 transition">
-                  Forgot password?
-                </Link>
               </div>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
